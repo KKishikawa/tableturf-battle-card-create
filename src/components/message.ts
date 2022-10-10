@@ -76,6 +76,7 @@ class Message {
     }, 300);
   }
 }
+/** メッセージを表示する */
 export function show(
   message: string,
   style: "info" | "warn" | "success" | "error"
@@ -97,18 +98,19 @@ export function show(
   }
   return new Message(message, styleInfo);
 }
-
+/** infoメッセージを表示する */
 export function info(message: string) {
   return new Message(message, infoStyle);
 }
+/** successメッセージを表示する */
 export function success(message: string) {
   return new Message(message, successStyle);
 }
-
+/** errorメッセージを表示する */
 export function error(message: string) {
   return new Message(message, errorStyle);
 }
-
+/** warnメッセージを表示する */
 export function warn(message: string) {
   return new Message(message, warnStyle);
 }

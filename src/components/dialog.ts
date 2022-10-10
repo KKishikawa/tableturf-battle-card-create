@@ -15,6 +15,7 @@ export interface IModalButtonOption {
   icon?: string;
   action?: ((closeFunc: (preventHandler?: boolean) => void) => void) | "close";
 }
+/** カスタムダイアログの管理クラス */
 export class ModalDialog {
   element: HTMLElement;
   onCloseHandler?: () => void;
@@ -119,7 +120,7 @@ export interface IComfirmOption extends IPromptOption {
 export interface IAlertOption extends IPromptOption {
   closeLabel?: string;
 }
-
+/** OK・キャンセルダイアログを表示する。okクリックでresolve,キャンセルでreject */
 export function confirm(option: IComfirmOption) {
   return new Promise<void>(function (resolve, reject) {
     new ModalDialog({
@@ -145,7 +146,7 @@ export function confirm(option: IComfirmOption) {
     });
   });
 }
-
+/** OKボタンダイアログを表示する。閉じられるとresolve */
 export function alert(options: IAlertOption) {
   return new Promise<void>(function (resolve) {
     new ModalDialog({
