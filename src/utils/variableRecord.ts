@@ -1,3 +1,8 @@
+const convertDict = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_";
+const dataBitCount = 5;
+const msb = 0b100000;
+const dataBit = 0b11111;
+
 /** 数列を読み込む */
 export function readVariableRecord(
   rawstr: string | null | undefined
@@ -7,16 +12,16 @@ export function readVariableRecord(
   let continuous = false;
   for (const char of rawstr) {
     // one char is a 5bit
-    const cur_input_raw = parseInt(char, 32);
+    const cur_input_raw = convertDict.indexOf(char);
     // return empty array if invalid value
-    if (!isFinite(cur_input_raw)) return [];
-    const cur_input = cur_input_raw & 0b1111;
+    if (cur_input_raw < 0) return [];
+    const cur_input = cur_input_raw & dataBit;
     if (continuous) {
-      ret[ret.length - 1] += cur_input << 4;
+      ret[ret.length - 1] += cur_input << dataBitCount;
     } else {
       ret.push(cur_input);
     }
-    continuous = (cur_input_raw & 0b10000) > 0;
+    continuous = (cur_input_raw & msb) > 0;
   }
   return ret;
 }
@@ -35,16 +40,16 @@ export function writeVariableRecord(
 class VariableRecordWriter {
   data: string[] = [];
   public write(val: number) {
-    const nextVal = val >> 4;
-    const tetra = val & 0b1111;
+    const nextVal = val >> dataBitCount;
+    const tetra = val & dataBit;
     if (nextVal > 0) {
-      this.innerWriteSeq(tetra | 0b10000);
+      this.innerWriteSeq(tetra | msb);
       this.write(nextVal);
     } else {
       this.innerWriteSeq(tetra);
     }
   }
   private innerWriteSeq(val: number) {
-    this.data.push(val.toString(32));
+    this.data.push(convertDict[val]);
   }
 }
