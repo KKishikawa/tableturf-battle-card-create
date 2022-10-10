@@ -47,7 +47,7 @@ class Message {
     messageBaseEl.querySelector("button")!.className += styleInfo.dismiss;
     const msgWrapper = document.createElement("div");
     msgWrapper.className =
-      "relative z-40 w-full max-h-full mt-4 transition-all duration-300 ease-out";
+      "relative z-50 w-full max-h-full mt-4 transition-all duration-300 ease-out";
     msgWrapper.append(messageBaseEl);
     this.element = msgWrapper;
 
