@@ -51,6 +51,15 @@
     @apply cursor-not-allowed bg-gray-100 text-gray-700 border-gray-300 dark:bg-zinc-600 dark:border-gray-600 dark:text-zinc-400 dark:placeholder-zinc-500;
   }
 }
+.form-input  {
+  option {
+    @apply text-gray-900 dark:text-white;
+  }
+  select&:invalid,
+  option:first-child {
+    @apply text-gray-400;
+  }
+}
 .form-label-checkbox {
   @apply ml-2;
 }
@@ -87,4 +96,7 @@
 }
 .button-default {
   @apply text-gray-500 bg-white hover:bg-gray-100 focus:ring-blue-300 border border-gray-200 hover:text-gray-900 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600;
+}
+.button-sm {
+  @apply focus:ring-2 px-2.5 py-1 rounded-md text-xs;
 }

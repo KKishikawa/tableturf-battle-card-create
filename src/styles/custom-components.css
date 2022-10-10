@@ -1,0 +1,24 @@
+.cardgrid-cell {
+  @apply relative z-10 border w-3 h-3 border-gray-800 -mr-px -mb-px dark:border-gray-200;
+  &.n-fill,
+  &.sp-fill {
+   @apply z-0 border-gray-600 dark:border-gray-500;
+  }
+  &.n-fill {
+    @apply bg-yellow-300 dark:bg-yellow-400;
+  }
+  &.sp-fill {
+    @apply bg-amber-500 dark:bg-amber-600;
+  }
+}
+.cardgrid-md .cardgrid-cell {
+  @apply w-5 h-5;
+}
+.cardgrid-lg .cardgrid-cell {
+  @apply w-8 h-8;
+}
+.cardgrid__clickable {
+  [data-idx] {
+    @apply cursor-pointer relative after:absolute after:inset-0 after:transition-opacity after:opacity-0 after:pointer-events-none hover:after:opacity-25 dark:hover:after:opacity-30 after:bg-gray-700 dark:after:bg-gray-200
+  }
+}

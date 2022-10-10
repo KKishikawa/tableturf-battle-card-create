@@ -30,29 +30,115 @@
     </nav>
     <div class="container mx-auto my-4">
       <div class="w-full card">
-        <form>
+        <form id="card-input-form" onsubmit="return false;">
           <h5 class="card__title">新規カード入力</h5>
           <div class="flex flex-wrap -mx-3">
-            <div class="w-24 mx-3 mb-3">
-              <label for="input_no" class="form-label form-label-input">No</label>
-              <input id="input_no" type="number" class="text-right form-input" placeholder="No" />
+            <div class="flex flex-wrap">
+              <div class="w-24 mx-3 mb-3">
+                <label for="input_no" class="form-label form-label-input"
+                  >カードNo</label
+                >
+                <input
+                  id="input_no"
+                  type="number"
+                  class="text-right form-input"
+                  placeholder="No"
+                />
+              </div>
+              <div class="mx-3 mb-3 w-28">
+                <label for="input_sp" class="form-label form-label-input"
+                  >スペシャル必要数</label
+                >
+                <input
+                  id="input_sp"
+                  type="number"
+                  class="text-right form-input"
+                  placeholder="sp"
+                />
+              </div>
+              <div class="w-48 mx-3 mb-3">
+                <label class="form-label form-label-input">レア度</label>
+                <select id="input_rarity" class="form-input">
+                  <option selected value="">レア度を選択...</option>
+                  <option value="0">コモン</option>
+                  <option value="1">レア</option>
+                  <option value="2">フレッシュ</option>
+                </select>
+              </div>
+              <div class="mx-3 mb-3 w-96">
+                <label for="input_name" class="form-label form-label-input"
+                  >カード名</label
+                >
+                <input
+                  id="input_name"
+                  type="text"
+                  class="form-input"
+                  placeholder="カード名"
+                />
+              </div>
             </div>
-            <div class="mx-3 mb-3 w-28">
-              <label for="input_sp" class="form-label form-label-input">スペシャル</label>
-              <input id="input_sp" type="number" class="text-right form-input" />
-            </div>
-            <div class="mx-3 mb-3 w-96">
-              <label for="input_name" class="form-label form-label-input">カード名</label>
-              <input id="input_name" type="text" class="form-input" placeholder="カード名" />
+            <div class="mx-3 mb-3">
+              <div class="flex flex-wrap items-end mb-2">
+                <h6
+                  class="text-base font-medium text-gray-900 dark:text-gray-300"
+                >
+                  塗りマス設定
+                </h6>
+                <p
+                  class="mt-1 ml-2 text-sm font-normal text-gray-500 dark:text-gray-400"
+                >
+                  マスをクリックして設定
+                </p>
+              </div>
+              <div class="flex items-center mb-3 ml-2">
+                <div class="flex items-center mr-4">
+                  <input
+                    type="radio"
+                    name="cell_color"
+                    id="radio_color_n"
+                    class="form-radio"
+                    value="n"
+                    checked
+                  />
+                  <label
+                    for="radio_color_n"
+                    class="flex items-center form-label form-label-radio"
+                    ><div class="cardgrid-cell n-fill"></div>
+                    <span class="ml-1">通常マス</span></label
+                  >
+                </div>
+                <div class="flex items-center mr-4">
+                  <input
+                    type="radio"
+                    name="cell_color"
+                    id="radio_color_sp"
+                    class="form-radio"
+                    value="sp"
+                  />
+                  <label
+                    for="radio_color_sp"
+                    class="flex items-center form-label form-label-radio"
+                    ><div class="mr-2 cardgrid-cell sp-fill"></div>
+                    <span class="ml-1">SPマス</span></label
+                  >
+                </div>
+                <button
+                  id="button_clear_cardgrid"
+                  class="button button-sm button-default"
+                >
+                  クリア
+                </button>
+              </div>
+              <div id="input_cardgrid" class="ml-2"></div>
             </div>
           </div>
+          <div class="card__button-group">
+            <button id="addcard" class="button button-primary">
+              <i class="fa fa-plus"></i>
+              追加
+            </button>
+          </div>
         </form>
-        <div class="card__button-group">
-          <button id="addcard" class="button button-primary">
-            <i class="fa fa-plus"></i>
-            追加
-          </button>
-        </div>
       </div>
       <div class="table__wrapper">
         <table class="table">
@@ -61,8 +147,8 @@
           </caption>
           <thead>
             <tr>
-              <th>no</th>
-              <th>sp値</th>
+              <th>カードNo</th>
+              <th>sp必要数</th>
               <th>名前</th>
             </tr>
           </thead>
