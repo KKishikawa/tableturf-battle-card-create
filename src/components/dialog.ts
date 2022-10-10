@@ -109,7 +109,7 @@ export class ModalDialog {
   }
 }
 
-export interface IPromptOption {
+interface IPromptOption {
   title?: string;
   message?: string;
 }

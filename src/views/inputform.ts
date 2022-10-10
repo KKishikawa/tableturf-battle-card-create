@@ -3,7 +3,7 @@ import * as dialog from "@/components/dialog";
 import * as Message from "@/components/message";
 import { CardGrid, fillTypes } from "@/components/cardGrid";
 import { SimpleInfo } from "@/components/simpleInfo";
-import { ICard, } from "@/models/card";
+import { ICard } from "@/models/card";
 import * as cardList from "@/views/cardList";
 
 class InputForm {
@@ -35,6 +35,19 @@ class InputForm {
     cardgridWrapper.append(this.gridManager.element);
     cardgridWrapper.append(this.infoElManager.element);
   }
+  /** formにデータを読み込む */
+  loadCard(info: ICard) {
+    (document.getElementById("input_no") as HTMLInputElement).value =
+      info.no.toString();
+    (document.getElementById("input_sp") as HTMLInputElement).value =
+      info.sp.toString();
+    (document.getElementById("input_rarity") as HTMLSelectElement).value =
+      info.rarity.toString();
+    (document.getElementById("input_name") as HTMLInputElement).value =
+      info.name;
+    this.gridManager.fill(info.spx, info.px);
+    this.showGridInfo();
+  }
   /** グリッドの情報の表示を更新する */
   showGridInfo() {
     const countInfo = this.gridManager.getCount();
@@ -56,10 +69,19 @@ class InputForm {
   }
   validate() {
     const errorMsg = [];
-    const card_no = convert.toInt((document.getElementById("input_no") as HTMLInputElement).value);
-    const sp = convert.toInt((document.getElementById("input_sp") as HTMLInputElement).value, -1);
-    const rarity = convert.toInt((document.getElementById("input_rarity") as HTMLSelectElement).value, -1);
-    const name = (document.getElementById("input_name") as HTMLInputElement).value;
+    const card_no = convert.toInt(
+      (document.getElementById("input_no") as HTMLInputElement).value
+    );
+    const sp = convert.toInt(
+      (document.getElementById("input_sp") as HTMLInputElement).value,
+      -1
+    );
+    const rarity = convert.toInt(
+      (document.getElementById("input_rarity") as HTMLSelectElement).value,
+      -1
+    );
+    const name = (document.getElementById("input_name") as HTMLInputElement)
+      .value;
     const gridInfo = this.gridManager.getData();
     const ret: ICard = {
       name,
@@ -87,21 +109,23 @@ class InputForm {
   }
 }
 
-const inputForm = new InputForm();
+export const inputForm = new InputForm();
 
 document.getElementById("button_clear_cardgrid")!.onclick = function () {
-  dialog.confirm({
-    title: "塗りマス設定",
-    message: "塗りマスの設定をクリアしますか？",
-  }).then(
-    () => {
-      inputForm.clearGrid();
-      Message.success("クリアしました。");
-    },
-    () => {
-      Message.info("操作をキャンセルしました。");
-    }
-  );
+  dialog
+    .confirm({
+      title: "塗りマス設定",
+      message: "塗りマスの設定をクリアしますか？",
+    })
+    .then(
+      () => {
+        inputForm.clearGrid();
+        Message.success("クリアしました。");
+      },
+      () => {
+        Message.info("操作をキャンセルしました。");
+      }
+    );
 };
 
 document.getElementById("addcard")!.onclick = function () {
@@ -113,12 +137,18 @@ document.getElementById("addcard")!.onclick = function () {
     });
     return;
   }
-  dialog.confirm({
-    title: "カードの登録",
-    message: "カードを追加しますか？",
-  }).then(() => {
-    cardList.tryAddCard(validateRet[1]);
-    Message.success("追加しました。");
-    inputForm.clearForm();
-  });
+  const isEdit = !!cardList.findCardByNo(validateRet[1].no);
+  const dialogConfig: dialog.IComfirmOption = isEdit
+    ? { title: "カードの編集", message: "カードの情報を上書きしますか？" }
+    : { title: "カードの登録", message: "カードを追加しますか？" };
+  dialog.confirm(dialogConfig).then(
+    () => {
+      cardList.tryAddCard(validateRet[1]);
+      Message.success(isEdit ? "更新しました" : "追加しました。");
+      inputForm.clearForm();
+    },
+    () => {
+      Message.info("キャンセルしました");
+    }
+  );
 };

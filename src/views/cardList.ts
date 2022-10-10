@@ -4,6 +4,7 @@ import * as RecordUtil from "@/utils/variableRecord";
 import { ICard, RARITY } from "@/models/card";
 import * as dialog from "@/components/dialog";
 import * as Message from "@/components/message";
+import { inputForm } from "@/views/inputform";
 
 const cardListTable = document.getElementById(
   "cardlist_table"
@@ -29,7 +30,21 @@ function deleteRow(tr: HTMLTableRowElement) {
     );
 }
 function editRow(tr: HTMLTableRowElement) {
-  // todo: read
+  const card_no = toInt(tr.dataset["card_no"]);
+  const card_sp = toInt(tr.querySelector(".card_sp")!.textContent?.trim());
+  const card_name = tr.querySelector(".card_name")!.textContent!.trim();
+  const rarity = toInt(tr.dataset["card_rarity"]);
+  const spx = RecordUtil.readVariableRecord(tr.dataset["card_spx"]);
+  const px = RecordUtil.readVariableRecord(tr.dataset["card_px"]);
+  const info: ICard = {
+    px,
+    spx,
+    no: card_no,
+    name: card_name,
+    sp: card_sp,
+    rarity,
+  };
+  inputForm.loadCard(info);
 }
 
 // tableBody内のbuttonクリックイベント
@@ -80,15 +95,18 @@ export function tryAddCard(cardInfo: ICard) {
 function createCardRow(cardInfo: ICard) {
   const gridCount = cardInfo.spx.length + cardInfo.px.length;
   const row = htmlToElement(
-    `<tr><td class="card_no">${cardInfo.no}</td><td class="card_sp">${
+    `<tr><td class="card_no">${
+      cardInfo.no
+    }</td><td class="card_gridcount">${gridCount}</td><td class="card_sp">${
       cardInfo.sp
+    }</td><td class="card_rarity">${
+      RARITY[cardInfo.rarity]
     }</td><td class="card_name">${
       cardInfo.name
-    }</td><td class="card_gridcount">${gridCount}</td><td class="card_rarity">${
-      RARITY[cardInfo.rarity]
     }</td><td class="card_action"><button class="action button-edit">編集</button><button class="action action--danger button-delete">削除</button></td></tr>`
   );
   row.dataset["card_no"] = cardInfo.no.toString();
+  row.dataset["card_rarity"] = cardInfo.rarity.toString();
   row.dataset["card_spx"] = RecordUtil.writeVariableRecord(cardInfo.spx);
   row.dataset["card_px"] = RecordUtil.writeVariableRecord(cardInfo.px);
   return row;
