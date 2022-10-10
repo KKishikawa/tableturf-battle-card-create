@@ -1,6 +1,8 @@
 import { htmlToElement } from "@/utils";
 import { createButton } from "@/components/button";
 
+const closeModalWrapperStyle = ["opacity-0"];
+const closeModalStyle = ["scale-0"];
 export interface IModalOption {
   title?: string;
   body?: string;
@@ -20,10 +22,10 @@ export class ModalDialog {
     this.onCloseHandler = options.onClose;
     const container = document.getElementById("app-modal_container")!;
     this.element = htmlToElement(
-      `<div tabindex="-1" aria-hidden="true" class="bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40">
-<div tabindex="-1" aria-hidden="true" class="modal flex justify-center items-center overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
+      `<div tabindex="-1" aria-hidden="true" class="transition-opacity bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40">
+<div tabindex="-1" aria-hidden="true" class="modal flex justify-center items-center overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 md:h-full">
     <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
-        <div class="modal-content relative bg-white rounded-lg shadow dark:bg-gray-700"></div>
+        <div class="modal-content relative transition-transform duration-200 bg-white rounded-lg shadow dark:bg-gray-700"></div>
     </div>
 </div>
 </div>`
@@ -85,10 +87,21 @@ export class ModalDialog {
         return;
       }
     });
+    modal_content.classList.add(...closeModalStyle);
+    this.element.classList.add(...closeModalWrapperStyle);
     container.append(this.element);
+    // open animate
+    window.setTimeout(() => {
+      modal_content.classList.remove(...closeModalStyle);
+      this.element.classList.remove(...closeModalWrapperStyle);
+    });
   }
   closeModal(preventHandler?: boolean) {
-    this.element.remove();
+    this.element.querySelector(".modal-content")!.classList.add(...closeModalStyle);
+    this.element.classList.add(...closeModalWrapperStyle);
+    window.setTimeout(() => {
+      this.element.remove();
+    }, 300);
     if (!preventHandler && this.onCloseHandler) {
       this.onCloseHandler();
     }
