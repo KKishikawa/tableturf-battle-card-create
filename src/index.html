@@ -141,17 +141,21 @@
         </form>
       </div>
       <div class="table__wrapper">
-        <table class="table">
+        <table id="cardlist_table" class="table" data-layout="table">
           <caption class="table-caption-title">
             カードリスト
           </caption>
           <thead>
             <tr>
-              <th>カードNo</th>
-              <th>sp必要数</th>
-              <th>名前</th>
+              <th class="text-center w-28">カードNo</th>
+              <th class="text-center w-28">sp必要数</th>
+              <th class="text-start">名前</th>
+              <th class="text-center w-28">マス数</th>
+              <th class="text-center w-28">レア度</th>
+              <th class="w-36"></th>
             </tr>
           </thead>
+          <tbody></tbody>
         </table>
       </div>
     </div>

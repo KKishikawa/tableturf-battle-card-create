@@ -19,7 +19,7 @@ export class CardGrid {
   readonly element: HTMLElement;
   constructor(options: ICardGridOptions = {}) {
     this.element = htmlToElement(
-      `<div class="grid grid-cols-8 grid-flow-row gap-0 w-max"></div>`
+      `<div class="cardgrid"></div>`
     );
     switch (options.size) {
       case "md":

@@ -23,6 +23,12 @@
     .action {
       @apply font-medium text-blue-600 dark:text-blue-500 hover:underline;
     }
+    .action--danger {
+      @apply text-red-600 dark:text-red-500;
+    }
+    .action + .action {
+      @apply ml-3;
+    }
   }
 }
 .table-striped {

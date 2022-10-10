@@ -4,6 +4,7 @@ import * as Message from "@/components/message";
 import { CardGrid, fillTypes } from "@/components/cardGrid";
 import { SimpleInfo } from "@/components/simpleInfo";
 import { ICard, } from "@/models/card";
+import * as cardList from "@/views/cardList";
 
 class InputForm {
   private readonly infoElManager: SimpleInfo;
@@ -104,23 +105,20 @@ document.getElementById("button_clear_cardgrid")!.onclick = function () {
 };
 
 document.getElementById("addcard")!.onclick = function () {
+  const validateRet = inputForm.validate();
+  if (validateRet[0].length > 0) {
+    dialog.alert({
+      title: "入力エラー",
+      message: "下記の内容を確認してください\n" + validateRet[0].join("\n"),
+    });
+    return;
+  }
   dialog.confirm({
     title: "カードの登録",
     message: "カードを追加しますか？",
   }).then(() => {
-    const validateRet = inputForm.validate();
-    if (validateRet[0].length > 0) {
-      dialog.alert({
-        title: "追加エラー",
-        message: "下記の内容を確認してください\n" + validateRet[0].join("\n"),
-      });
-      Message.error("登録に失敗しました。");
-      return;
-    }
-    // todo リストへの追加処理
-    console.log(validateRet[1]);
+    cardList.tryAddCard(validateRet[1]);
     Message.success("追加しました。");
-
     inputForm.clearForm();
   });
 };

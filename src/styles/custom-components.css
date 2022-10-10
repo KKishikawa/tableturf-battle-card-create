@@ -1,3 +1,6 @@
+.cardgrid {
+  @apply grid grid-cols-8 grid-flow-row gap-0 w-max;
+}
 .cardgrid-cell {
   @apply relative z-10 border w-3 h-3 border-gray-800 -mr-px -mb-px dark:border-gray-200;
   &.n-fill,
@@ -20,5 +23,29 @@
 .cardgrid__clickable {
   [data-idx] {
     @apply cursor-pointer relative after:absolute after:inset-0 after:transition-opacity after:opacity-0 after:pointer-events-none hover:after:opacity-25 dark:hover:after:opacity-30 after:bg-gray-700 dark:after:bg-gray-200
+  }
+}
+
+#cardlist_table[data-layout="table"] {
+  .cardgrid {
+    @apply hidden
+  }
+  .card_no {
+    @apply text-end;
+  }
+  .card_sp {
+    @apply text-center;
+  }
+  .card_name {
+    @apply  text-start;
+  }
+  .card_gridcount {
+    @apply text-end;
+  }
+  .card_rarity {
+    @apply text-center;
+  }
+  .card_action {
+    @apply text-center;
   }
 }

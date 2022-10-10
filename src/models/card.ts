@@ -20,3 +20,5 @@ export interface ICard {
   px: number[];
   rarity: number;
 }
+
+export const RARITY = ["コモン", "レア", "フレッシュ"];
