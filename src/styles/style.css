@@ -1,8 +1,12 @@
+@import "./reset.css";
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 @import "./components.css";
 
+* {
+  border: 0 solid #e5e7eb;
+}
 #app-main {
   @apply m-5;
 }
