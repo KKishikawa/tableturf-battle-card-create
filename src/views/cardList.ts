@@ -1,7 +1,6 @@
 import { htmlToElement } from "@/utils/index";
 import { toInt } from "@/utils/convert";
-import * as RecordUtil from "@/utils/variableRecord";
-import { ICard, RARITY } from "@/models/card";
+import { ICard, RARITY, encodeInkInfo, decodeInkInfo } from "@/models/card";
 import * as dialog from "@/components/dialog";
 import * as Message from "@/components/message";
 import { inputForm } from "@/views/inputform";
@@ -34,8 +33,8 @@ function editRow(tr: HTMLTableRowElement) {
   const card_sp = toInt(tr.querySelector(".card_sp")!.textContent?.trim());
   const card_name = tr.querySelector(".card_name")!.textContent!.trim();
   const rarity = toInt(tr.dataset["card_rarity"]);
-  const spx = RecordUtil.readVariableRecord(tr.dataset["card_spx"]);
-  const px = RecordUtil.readVariableRecord(tr.dataset["card_px"]);
+  const spx = decodeInkInfo(tr.dataset["card_spx"]);
+  const px = decodeInkInfo(tr.dataset["card_px"]);
   const info: ICard = {
     px,
     spx,
@@ -107,7 +106,7 @@ function createCardRow(cardInfo: ICard) {
   );
   row.dataset["card_no"] = cardInfo.no.toString();
   row.dataset["card_rarity"] = cardInfo.rarity.toString();
-  row.dataset["card_spx"] = RecordUtil.writeVariableRecord(cardInfo.spx);
-  row.dataset["card_px"] = RecordUtil.writeVariableRecord(cardInfo.px);
+  row.dataset["card_spx"] = encodeInkInfo(cardInfo.spx);
+  row.dataset["card_px"] = encodeInkInfo(cardInfo.px);
   return row;
 }

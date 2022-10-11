@@ -53,3 +53,27 @@ class VariableRecordWriter {
     this.data.push(convertDict[val]);
   }
 }
+
+
+/** 数列を読み込む(固定長) */
+export function readeFixRecord(
+  rawstr: string | null | undefined
+): number[] {
+  if (!rawstr) return [];
+  const ret = [];
+  for (const char of rawstr) {
+    const cur_input_raw = convertDict.indexOf(char);
+    // return empty array if invalid value
+    if (cur_input_raw < 0) return [];
+    ret.push(cur_input_raw);
+  }
+  return ret;
+}
+
+/** 数列を短縮文字列に変換する(固定長) */
+export function writeFixRecord(
+  record: number[] | null | undefined
+): string {
+  if (!record || record.length < 1) return "";
+  return record.map(r => convertDict[r]).join("");
+}
