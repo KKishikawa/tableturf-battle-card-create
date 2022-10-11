@@ -4,7 +4,7 @@ const closeModalWrapperStyle = ["opacity-0"];
 const closeModalStyle = ["scale-0"];
 export interface IModalOption {
   title?: string;
-  body?: string;
+  body?: string | HTMLElement | Iterable<HTMLElement>;
   buttons?: IModalButtonOption[];
   onClose?: () => void;
 }
@@ -58,7 +58,13 @@ export class ModalDialog {
       const modal_body = document.createElement("div");
       modal_body.className =
         "p-6 space-y-6 text-base leading-relaxed text-gray-500 dark:text-gray-400";
-      modal_body.innerText = options.body;
+        if (typeof options.body === "string") {
+          modal_body.innerText = options.body;
+        } else if (options.body instanceof HTMLElement) {
+          modal_body.append(options.body);
+        } else {
+          modal_body.append(...options.body);
+        }
       modal_content.append(modal_body);
     }
     if (options.buttons) {

@@ -1,13 +1,27 @@
+function generateDomFragment(html: string) {
+  const template = document.createElement("template");
+  template.innerHTML = html.trim();
+  return template;
+}
 /**
  * html to dom element
  * @param html representing a single element
  * @returns
  */
 export function htmlToElement<T extends HTMLElement>(html: string): T {
-  const template = document.createElement("template");
-  html = html.trim();
-  template.innerHTML = html;
-  return template.content.firstElementChild as T;
+  const template = generateDomFragment(html);
+  return template.content.firstChild as T;
+}
+/**
+ * html to dom elements
+ * @param html representing some elements
+ * @returns
+ */
+export function htmlToElements<T extends HTMLElement>(
+  html: string
+): HTMLCollectionOf<T> {
+  const template = generateDomFragment(html);
+  return template.content.children as HTMLCollectionOf<T>;
 }
 
 /** 指定したキーのデータを取得する */
