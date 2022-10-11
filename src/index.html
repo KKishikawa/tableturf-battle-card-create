@@ -44,19 +44,45 @@
           ><input type="file" class="hidden" accept="application/json" />
         </button>
         <div class="flex-auto"></div>
-        <div>
+        <div class="relative">
           <button
-            id="darkModeToggleButton"
+            id="themeSettingButton"
             type="button"
-            class="relative button button-sm button-default"
+            class="relative flex items-center button button-sm button-default"
+            title="テーマの変更"
           >
-            <i
-              class="absolute transition-opacity duration-500 -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 fa-solid fa-moon dark:opacity-0"
-            ></i>
-            <i
-              class="transition-opacity duration-500 opacity-0 fa-solid fa-sun dark:opacity-100"
-            ></i>
+            <i class="w-4 h-4 fa-solid fa-circle-half-stroke"></i>
+            <span class="theme-setting-label">テーマ変更</span>
           </button>
+          <div id="themeButtonGroup">
+            <button
+              data-theme_mode="light"
+              title="ライトモード"
+              type="button"
+              class="flex items-center mt-1 pointer-events-auto button button-sm button-default"
+            >
+              <i class="w-4 h-4 fa-solid fa-sun"></i>
+              <span class="theme-setting-label">ライト</span>
+            </button>
+            <button
+              data-theme_mode="dark"
+              title="ダークモード"
+              type="button"
+              class="flex items-center mt-1 pointer-events-auto button button-sm button-default"
+            >
+              <i class="w-4 h-4 fa-solid fa-moon"></i>
+              <span class="theme-setting-label">ダーク</span>
+            </button>
+            <button
+              data-theme_mode="system"
+              title="システム設定を使用"
+              type="button"
+              class="flex items-center mt-1 pointer-events-auto button button-sm button-default"
+            >
+              <i class="w-4 h-4 fa-solid fa-computer"></i>
+              <span class="theme-setting-label">システム</span>
+            </button>
+          </div>
         </div>
       </div>
     </nav>
