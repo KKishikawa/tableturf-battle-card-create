@@ -9,10 +9,10 @@ interface IMessageCss {
   dismiss: string;
 }
 const infoStyle: IMessageCss = {
-  outer: " text-blue-700 bg-blue-100 dark:bg-blue-200 dark:text-blue-800",
+  outer: " text-gray-700 bg-gray-100 dark:bg-gray-700 dark:text-gray-300",
   icon: " fa-solid fa-circle-info",
   dismiss:
-    " bg-blue-100 text-blue-500 focus:ring-blue-400 hover:bg-blue-200 dark:bg-blue-200 dark:text-blue-600 dark:hover:bg-blue-300",
+    " bg-gray-100 text-gray-500 focus:ring-gray-400 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white",
 };
 const errorStyle: IMessageCss = {
   outer: " text-red-700 bg-red-100 dark:bg-red-200 dark:text-red-800",
