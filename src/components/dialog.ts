@@ -1,5 +1,4 @@
 import { htmlToElement } from "@/utils";
-import { createButton } from "@/components/button";
 
 const closeModalWrapperStyle = ["opacity-0"];
 const closeModalStyle = ["scale-0"];
@@ -15,6 +14,16 @@ export interface IModalButtonOption {
   icon?: string;
   action?: ((closeFunc: (preventHandler?: boolean) => void) => void) | "close";
 }
+function createDialogButton(label: string, isPrimary?: boolean) {
+  const button = htmlToElement(
+    `<button type="button" class="button ${
+      isPrimary ? "button-primary" : "button-alt"
+    }"></button>`
+  );
+  button.textContent = label;
+  return button;
+}
+
 /** カスタムダイアログの管理クラス */
 export class ModalDialog {
   element: HTMLElement;
@@ -57,7 +66,7 @@ export class ModalDialog {
       modal_footer.className =
         "flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600";
       for (const buttonOption of options.buttons) {
-        const button = createButton(buttonOption.label, buttonOption.primary);
+        const button = createDialogButton(buttonOption.label, buttonOption.primary);
         if (buttonOption.action) {
           if (buttonOption.action === "close") {
             // 閉じるクラスを追加
@@ -98,7 +107,9 @@ export class ModalDialog {
     });
   }
   closeModal(preventHandler?: boolean) {
-    this.element.querySelector(".modal-content")!.classList.add(...closeModalStyle);
+    this.element
+      .querySelector(".modal-content")!
+      .classList.add(...closeModalStyle);
     this.element.classList.add(...closeModalWrapperStyle);
     window.setTimeout(() => {
       this.element.remove();
