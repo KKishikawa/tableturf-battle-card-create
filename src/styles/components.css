@@ -115,4 +115,7 @@
 
 .button-toggle {
   @apply inline-flex rounded-md shadow-sm;
+  .button {
+    @apply rounded-none first:rounded-l-lg last:rounded-r-lg;
+  }
 }
