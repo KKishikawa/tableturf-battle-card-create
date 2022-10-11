@@ -144,6 +144,8 @@ document.getElementById("addcard")!.onclick = function () {
   dialog.confirm(dialogConfig).then(
     () => {
       cardList.tryAddCard(validateRet[1]);
+      // バックグラウンドで自動保存を実行する
+      window.setTimeout(cardList.saveCardList.bind(null, true));
       Message.success(isEdit ? "更新しました" : "追加しました。");
       inputForm.clearForm();
     },

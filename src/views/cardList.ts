@@ -46,6 +46,8 @@ function deleteRow(tr: HTMLTableRowElement) {
     .then(
       () => {
         tr.remove();
+        // バックグラウンドで自動保存を実行する
+        window.setTimeout(saveCardList.bind(null, true));
         Message.success(`No.${card_no} ${card_name} を削除しました。`);
       },
       () => {
@@ -108,6 +110,35 @@ function createCardRow(cardInfo: ICard) {
   row.dataset["card_px"] = encodeInkInfo(cardInfo.px);
   return row;
 }
+/** ブラウザにカードリストの情報を保存します */
+export function saveCardList(isAutoSaveAction?: boolean) {
+  if (isAutoSaveAction) {
+    // 自動保存アクションの場合は、自動保存が有効か確認する
+    if (
+      !(document.getElementById("autosave_cardlist") as HTMLInputElement)
+        .checked
+    )
+      return;
+  }
+  try {
+    const cards = (Array.from(tableBody.children) as HTMLTableRowElement[]).map(
+      loadCardFromRow
+    );
+    saveToLocalStorage(cards);
+    if (isAutoSaveAction) {
+      Message.info("ブラウザに保存しているカードリストを更新しました。");
+    } else {
+      Message.success("ブラウザにカードリストを保存しました。");
+    }
+  } catch (error) {
+    console.log(error);
+    if (isAutoSaveAction) {
+      Message.warn("ブラウザに保存しているカードリストの更新に失敗しました。");
+    } else {
+      Message.error("ブラウザへのカードリストの保存に失敗しました。");
+    }
+  }
+}
 
 // component process
 {
@@ -118,26 +149,18 @@ function createCardRow(cardInfo: ICard) {
     if (!button) return;
     const tr = button.closest("tr");
     if (!tr) return;
+
     if (button.classList.contains("button-delete")) {
+      // 削除ボタンクリック
       deleteRow(tr);
     } else if (button.classList.contains("button-edit")) {
+      // 編集ボタンクリック
       editRow(tr);
     }
   });
   document
     .getElementById("save_cardlist_browser")!
-    .addEventListener("click", function () {
-      try {
-        const cards = (
-          Array.from(tableBody.children) as HTMLTableRowElement[]
-        ).map(loadCardFromRow);
-        saveToLocalStorage(cards);
-        Message.success("ブラウザにデータを保存しました。");
-      } catch (error) {
-        console.log(error);
-        Message.error("ブラウザへの保存に失敗しました。");
-      }
-    });
+    .addEventListener("click", saveCardList.bind(null, false));
   document
     .getElementById("save_cardlist_file")!
     .addEventListener("click", function () {
