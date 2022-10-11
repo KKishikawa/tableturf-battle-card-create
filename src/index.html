@@ -25,20 +25,37 @@
             class="mr-6 text-xl font-semibold whitespace-nowrap dark:text-white"
             >ナワバトラーカード入力</span
           >
+        </div>
+        <button
+          id="save_cardlist_file"
+          class="mr-2 button button-sm button-default"
+          title="ファイルに保存"
+          type="button"
+        >
+          <i class="fa-solid fa-download"></i>
+        </button>
+        <button
+          id="load_cardlist_file"
+          class="mr-2 button button-sm button-default"
+          title="ファイルの読み込み"
+          type="button"
+        >
+          <i class="fa-solid fa-file-import"></i
+          ><input type="file" class="hidden" accept="application/json" />
+        </button>
+        <div class="flex-auto"></div>
+        <div>
           <button
-            id="save_cardlist_file"
-            class="mr-2 button button-sm button-default"
-            title="ファイルに保存"
+            id="darkModeToggleButton"
+            type="button"
+            class="relative button button-sm button-default"
           >
-            <i class="fa-solid fa-download"></i>
-          </button>
-          <button
-            id="load_cardlist_file"
-            class="mr-2 button button-sm button-default"
-            title="ファイルの読み込み"
-          >
-            <i class="fa-solid fa-file-import"></i
-            ><input type="file" class="hidden" accept="application/json" />
+            <i
+              class="absolute transition-opacity duration-500 -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 fa-solid fa-moon dark:opacity-0"
+            ></i>
+            <i
+              class="transition-opacity duration-500 opacity-0 fa-solid fa-sun dark:opacity-100"
+            ></i>
           </button>
         </div>
       </div>
@@ -141,6 +158,7 @@
                   id="button_clear_cardgrid"
                   class="button button-sm button-default"
                   title="塗り情報のクリア"
+                  type="button"
                 >
                   クリア
                 </button>
@@ -153,6 +171,7 @@
               id="addcard"
               class="button button-primary"
               title="リストへの追加"
+              type="button"
             >
               <i class="fa fa-plus"></i>
               追加
@@ -160,7 +179,7 @@
           </div>
         </form>
       </div>
-      <div class="table__wrapper">
+      <div class="mt-3 table__wrapper">
         <table id="cardlist_table" class="table" data-layout="table">
           <caption class="table-caption-title">
             <div class="flex items-center">
@@ -169,6 +188,7 @@
                 id="save_cardlist_browser"
                 class="mr-3 button button-primary"
                 title="ブラウザに保存"
+                type="button"
               >
                 <i class="mr-2 fa-solid fa-floppy-disk"></i>ブラウザに保存
               </button>
