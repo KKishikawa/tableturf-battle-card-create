@@ -22,9 +22,24 @@
       >
         <div class="flex items-center">
           <span
-            class="self-center text-xl font-semibold whitespace-nowrap dark:text-white"
+            class="mr-6 text-xl font-semibold whitespace-nowrap dark:text-white"
             >ナワバトラーカード入力</span
           >
+          <button
+            id="save_cardlist_file"
+            class="mr-2 button button-sm button-default"
+            title="ファイルに保存"
+          >
+            <i class="fa-solid fa-download"></i>
+          </button>
+          <button
+            id="load_cardlist_file"
+            class="mr-2 button button-sm button-default"
+            title="ファイルの読み込み"
+          >
+            <i class="fa-solid fa-upload"></i
+            ><input type="file" class="hidden" accept="application/json" />
+          </button>
         </div>
       </div>
     </nav>
@@ -125,6 +140,7 @@
                 <button
                   id="button_clear_cardgrid"
                   class="button button-sm button-default"
+                  title="塗り情報のクリア"
                 >
                   クリア
                 </button>
@@ -133,7 +149,11 @@
             </div>
           </div>
           <div class="card__button-group">
-            <button id="addcard" class="button button-primary">
+            <button
+              id="addcard"
+              class="button button-primary"
+              title="リストへの追加"
+            >
               <i class="fa fa-plus"></i>
               追加
             </button>
@@ -143,7 +163,16 @@
       <div class="table__wrapper">
         <table id="cardlist_table" class="table" data-layout="table">
           <caption class="table-caption-title">
-            カードリスト
+            <div class="flex items-center">
+              <span class="mr-12">カードリスト</span
+              ><button
+                id="save_cardlist_browser"
+                class="mr-3 button button-primary"
+                title="ブラウザに保存"
+              >
+                <i class="mr-2 fa-solid fa-floppy-disk"></i>ブラウザに保存
+              </button>
+            </div>
           </caption>
           <thead>
             <tr>
