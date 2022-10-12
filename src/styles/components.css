@@ -114,8 +114,11 @@
 }
 
 .button-toggle {
-  @apply inline-flex rounded-md shadow-sm;
+  @apply inline-flex rounded-md shadow-sm -space-x-px;
   .button {
-    @apply rounded-none first:rounded-l-lg last:rounded-r-lg;
+    @apply rounded-none first:rounded-l-lg first:border-l last:rounded-r-lg;
+  }
+  .button-active {
+    @apply text-blue-600 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:bg-gray-700 dark:text-white;
   }
 }
