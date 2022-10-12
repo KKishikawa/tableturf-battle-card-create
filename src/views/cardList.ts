@@ -198,6 +198,17 @@ export function saveCardList(isAutoSaveAction?: boolean) {
   loadFileButton.addEventListener("click", function () {
     this.getElementsByTagName("input")[0].click();
   });
+
+  // レイアウト変更
+  const layoutButtons = document.querySelectorAll<HTMLElement>("[data-button_type]");
+  layoutButtons.forEach((el) => {
+    el.addEventListener("click", function() {
+      layoutButtons.forEach(el => el.classList.remove("button-active"));
+      this.classList.add("button-active");
+      const layoutName = this.dataset["button_type"]!;
+      cardListTable.dataset["layout"] = layoutName;
+    });
+  });
 }
 // initialize
 {
