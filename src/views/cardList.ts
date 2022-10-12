@@ -1,10 +1,12 @@
-import { htmlToElement } from "@/utils/index";
+import Mustache from "mustache";
+import { htmlToElement } from "@/utils";
 import { toInt } from "@/utils/convert";
 import {
   ICard,
+  ICardRaw,
   RARITY,
-  encodeInkInfo,
   decodeInkInfo,
+  encodeCard,
   loadFromLocalStorage,
   saveToLocalStorage,
   saveToFile,
@@ -13,6 +15,7 @@ import {
 import * as dialog from "@/components/dialog";
 import * as Message from "@/components/message";
 import { inputForm } from "@/views/inputform";
+import tableRowHTML from "@/template/cardList/row.html";
 
 const cardListTable = document.getElementById(
   "cardlist_table"
@@ -94,20 +97,14 @@ export function tryAddCard(cardInfo: ICard) {
 function createCardRow(cardInfo: ICard) {
   const gridCount = cardInfo.spx.length + cardInfo.px.length;
   const row = htmlToElement(
-    `<tr><td class="card_no">${
-      cardInfo.no
-    }</td><td class="card_gridcount">${gridCount}</td><td class="card_sp">${
-      cardInfo.sp
-    }</td><td class="card_rarity">${
-      RARITY[cardInfo.rarity]
-    }</td><td class="card_name">${
-      cardInfo.name
-    }</td><td class="card_action"><button class="action button-edit">編集</button><button class="action action--danger button-delete">削除</button></td></tr>`
+    Mustache.render(tableRowHTML, {
+      ...encodeCard(cardInfo),
+      gridCount,
+      rarity_label(this: ICardRaw) {
+        return RARITY[this.r];
+      },
+    })
   );
-  row.dataset["card_no"] = cardInfo.no.toString();
-  row.dataset["card_rarity"] = cardInfo.rarity.toString();
-  row.dataset["card_spx"] = encodeInkInfo(cardInfo.spx);
-  row.dataset["card_px"] = encodeInkInfo(cardInfo.px);
   return row;
 }
 /** ブラウザにカードリストの情報を保存します */

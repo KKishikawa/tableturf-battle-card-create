@@ -1,3 +1,4 @@
+import Mustache from "mustache";
 import * as convert from "@/utils/convert";
 import * as dialog from "@/components/dialog";
 import * as Message from "@/components/message";
@@ -5,6 +6,8 @@ import { CardGrid, fillTypes } from "@/components/cardGrid";
 import { SimpleInfo } from "@/components/simpleInfo";
 import { ICard } from "@/models/card";
 import * as cardList from "@/views/cardList";
+
+import errMsgHTML from "@/template/inputForm/errorMsg.html";
 
 class InputForm {
   private readonly infoElManager: SimpleInfo;
@@ -133,7 +136,7 @@ document.getElementById("addcard")!.onclick = function () {
   if (validateRet[0].length > 0) {
     dialog.alert({
       title: "入力エラー",
-      message: "下記の内容を確認してください\n" + validateRet[0].join("\n"),
+      html: Mustache.render(errMsgHTML, validateRet[0]),
     });
     return;
   }
