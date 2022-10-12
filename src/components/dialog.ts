@@ -26,7 +26,7 @@ function createDialogButton(label: string, isPrimary?: boolean) {
 
 /** カスタムダイアログの管理クラス */
 export class ModalDialog {
-  element: HTMLElement;
+  readonly element: HTMLElement;
   onCloseHandler?: () => void;
   constructor(options: IModalOption) {
     this.onCloseHandler = options.onClose;
