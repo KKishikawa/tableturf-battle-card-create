@@ -10,8 +10,9 @@ function createCell(idx: number) {
 export const fillTypes = ["n-fill", "sp-fill"] as const;
 /** filltypeを双方選択するCSSセレクタ */
 const fillTypeSelector = fillTypes.map((s) => `.${s}`).join(",");
+export type CardGridCellSize = "sm" | "md" | "lg";
 export interface ICardGridOptions {
-  size?: "sm" | "md" | "lg";
+  size?: CardGridCellSize;
   clickHandler?: (cell: HTMLElement) => void;
 }
 /** カードの塗り範囲をグリッド表現 */
@@ -21,14 +22,7 @@ export class CardGrid {
     this.element = htmlToElement(
       `<div class="cardgrid"><div class="cardgrid-border"></div></div>`
     );
-    switch (options.size) {
-      case "md":
-        this.element.classList.add("cardgrid-md");
-        break;
-      case "lg":
-        this.element.classList.add("cardgrid-lg");
-        break;
-    }
+    this.changeSize(options.size ?? "sm");
     if (options.clickHandler) {
       const cHandler = options.clickHandler;
       this.element.classList.add("cardgrid__clickable");
@@ -42,6 +36,9 @@ export class CardGrid {
     for (let i = 0; i < 64; i++) {
       this.element.append(createCell(i));
     }
+  }
+  changeSize(size: CardGridCellSize) {
+    this.element.dataset["grid_size"] = size;
   }
   /** 設定値をもとにグリッドを塗ります(上書き) */
   fill(spx: number[], px: number[]) {
