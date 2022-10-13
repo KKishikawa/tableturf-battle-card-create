@@ -48,6 +48,7 @@ class InputForm {
       info.rarity.toString();
     (document.getElementById("input_name") as HTMLInputElement).value =
       info.name;
+    this.gridManager.clear();
     this.gridManager.fill(info.spx, info.px);
     this.showGridInfo();
   }
