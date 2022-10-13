@@ -42,7 +42,7 @@ module.exports = {
         }]
       },
       {
-        test: /\.css$/,
+        test: /\.p?css$/,
         use: [
           process.env.NODE_ENV !== 'production'
             ? 'style-loader'
