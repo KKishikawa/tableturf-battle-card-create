@@ -3,14 +3,15 @@
   data-card_rarity="{{r}}"
   data-card_spx="{{sg}}"
   data-card_px="{{g}}"
+  draggable="true"
 >
-  <td class="card_no">{{n}}</td>
-  <td class="card_gridcount">{{gridCount}}</td>
-  <td class="card_sp">{{sp}}</td>
-  <td class="card_rarity">{{rarity_label}}</td>
-  <td class="card_name">{{ja}}</td>
+  <td class="card_no" title="ナンバー">{{n}}</td>
+  <td class="card_gridcount" title="マス数">{{gridCount}}</td>
+  <td class="card_sp" title="スペシャルポイント"><div class="inline-block cardgrid-cell sp-fill"></div> <i class="mx-1 fa fa-xmark"></i> {{sp}}</td>
+  <td class="card_rarity" title="レア度"><div>{{rarity_label}}</div></td>
+  <td class="card_name" title="カード名">{{ja}}</td>
   <td class="card_action">
-    <button class="action button-edit">編集</button
-    ><button class="action action--danger button-delete">削除</button>
+    <button class="action button-edit"><i class="fa fa-edit"></i><span class="label">編集</span></button
+    ><button class="action action--danger button-delete"><i class="fa fa-trash-can"></i><span class="label">削除</span></button>
   </td>
 </tr>

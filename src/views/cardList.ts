@@ -14,6 +14,7 @@ import {
 } from "@/models/card";
 import * as dialog from "@/components/dialog";
 import * as Message from "@/components/message";
+import { CardGrid } from "@/components/cardGrid";
 import { inputForm } from "@/views/inputform";
 import tableRowHTML from "@/template/cardList/row.html";
 
@@ -105,6 +106,9 @@ function createCardRow(cardInfo: ICard) {
       },
     })
   );
+  const cardGrid = new CardGrid();
+  cardGrid.fill(cardInfo.spx, cardInfo.px);
+  row.prepend(cardGrid.element);
   return row;
 }
 /** ブラウザにカードリストの情報を保存します */
