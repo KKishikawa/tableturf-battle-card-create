@@ -114,47 +114,62 @@ class InputForm {
 }
 
 export const inputForm = new InputForm();
+{
+  document.getElementById("button_clear_cardgrid")!.onclick = function () {
+    dialog
+      .confirm({
+        title: "塗りマス設定",
+        message: "塗りマスの設定をクリアしますか？",
+      })
+      .then(
+        () => {
+          inputForm.clearGrid();
+          Message.success("クリアしました。");
+        },
+        () => {
+          Message.info("操作をキャンセルしました。");
+        }
+      );
+  };
 
-document.getElementById("button_clear_cardgrid")!.onclick = function () {
-  dialog
-    .confirm({
-      title: "塗りマス設定",
-      message: "塗りマスの設定をクリアしますか？",
-    })
-    .then(
+  document.getElementById("addcard")!.onclick = function () {
+    const validateRet = inputForm.validate();
+    if (validateRet[0].length > 0) {
+      dialog.alert({
+        title: "入力エラー",
+        html: Mustache.render(errMsgHTML, validateRet[0]),
+      });
+      return;
+    }
+    const isEdit = !!cardList.findCardByNo(validateRet[1].no);
+    const dialogConfig: dialog.IComfirmOption = isEdit
+      ? { title: "カードの編集", message: "カードの情報を上書きしますか？" }
+      : { title: "カードの登録", message: "カードを追加しますか？" };
+    dialog.confirm(dialogConfig).then(
       () => {
-        inputForm.clearGrid();
-        Message.success("クリアしました。");
+        cardList.tryAddCard(validateRet[1]);
+        // バックグラウンドで自動保存を実行する
+        window.setTimeout(cardList.saveCardList.bind(null, true));
+        Message.success(isEdit ? "更新しました" : "追加しました。");
+        inputForm.clearForm();
       },
       () => {
-        Message.info("操作をキャンセルしました。");
+        Message.info("キャンセルしました");
       }
     );
-};
-
-document.getElementById("addcard")!.onclick = function () {
-  const validateRet = inputForm.validate();
-  if (validateRet[0].length > 0) {
-    dialog.alert({
-      title: "入力エラー",
-      html: Mustache.render(errMsgHTML, validateRet[0]),
-    });
-    return;
-  }
-  const isEdit = !!cardList.findCardByNo(validateRet[1].no);
-  const dialogConfig: dialog.IComfirmOption = isEdit
-    ? { title: "カードの編集", message: "カードの情報を上書きしますか？" }
-    : { title: "カードの登録", message: "カードを追加しますか？" };
-  dialog.confirm(dialogConfig).then(
-    () => {
-      cardList.tryAddCard(validateRet[1]);
-      // バックグラウンドで自動保存を実行する
-      window.setTimeout(cardList.saveCardList.bind(null, true));
-      Message.success(isEdit ? "更新しました" : "追加しました。");
-      inputForm.clearForm();
-    },
-    () => {
-      Message.info("キャンセルしました");
-    }
-  );
-};
+  };
+  document.getElementById("clearInputForm")!.onclick = function () {
+    dialog
+      .confirm({
+        title: "入力フォームのクリア",
+        message: "入力フォームをクリアしますか？",
+      })
+      .then(
+        () => {
+          inputForm.clearForm();
+          Message.success("クリアしました。");
+        },
+        () => Message.info("キャンセルしました。")
+      ).catch(()=> Message.error("クリアに失敗しました。"));
+  };
+}
