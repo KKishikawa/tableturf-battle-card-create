@@ -100,10 +100,10 @@
       @apply flex flex-wrap gap-2 py-2;
     }
     tr {
-      @apply inline-grid drop-shadow-md shadow-black dark:shadow-white grid-cols-6 w-44 row-auto gap-1 border-2 rounded-lg p-1 after:content-none;
+      @apply inline-grid drop-shadow-md bg-white dark:bg-gray-900 shadow-black dark:shadow-white grid-cols-6 w-44 row-auto gap-1 border-2 rounded-lg p-1 after:content-none;
     }
     td {
-      @apply block px-1 py-0;
+      @apply block border-none px-1 py-0;
     }
     .card_no {
       @apply order-first col-span-3;
@@ -157,4 +157,8 @@
       }
     }
   }
+}
+
+.gridcount {
+  @apply py-1 relative left-1 z-10 text-center after:bg-violet-600 after:border-violet-900 text-white text-base after:-z-10 after:-rotate-45 after:absolute after:top-1/2 after:left-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:w-6 after:h-6 after:border-2 after:rounded-sm;
 }
