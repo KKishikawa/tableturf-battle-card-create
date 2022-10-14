@@ -192,7 +192,7 @@
               <div id="input_cardgrid" class="ml-2"></div>
             </div>
           </div>
-          <div class="card__button-group">
+          <div class="card__actions">
             <button
               id="addcard"
               class="button button-primary"
@@ -210,35 +210,37 @@
             >
               クリア
             </button>
+            <div class="flex-auto"></div>
+            <div class="flex items-center mr-3" title="自動保存">
+              <input
+                id="autosave_cardlist"
+                type="checkbox"
+                class="form-checkbox"
+                checked
+              />
+              <label
+                for="autosave_cardlist"
+                class="form-label form-label-checkbox"
+                >自動保存</label
+              >
+            </div>
+            <button
+              id="save_cardlist_browser"
+              class="mr-3 button button-primary button-sm"
+              title="ブラウザに保存"
+              type="button"
+            >
+              <i class="mr-2 fa-solid fa-floppy-disk"></i>ブラウザに保存
+            </button>
           </div>
         </form>
       </div>
       <div class="mt-3 table__wrapper">
-        <table id="cardlist_table" class="table" data-layout="grid">
+        <table id="cardlist_table" class="table table-hover" data-layout="grid">
           <caption class="table-caption-title">
             <div class="flex items-center">
               <span class="mr-12">カードリスト</span
-              ><button
-                id="save_cardlist_browser"
-                class="mr-3 button button-primary button-sm"
-                title="ブラウザに保存"
-                type="button"
               >
-                <i class="mr-2 fa-solid fa-floppy-disk"></i>ブラウザに保存
-              </button>
-              <div class="flex items-center mr-3" title="自動保存">
-                <input
-                  id="autosave_cardlist"
-                  type="checkbox"
-                  class="form-checkbox"
-                  checked
-                />
-                <label
-                  for="autosave_cardlist"
-                  class="form-label form-label-checkbox"
-                  >自動保存</label
-                >
-              </div>
               <div class="flex-auto"></div>
               <div class="button-toggle" role="group">
                 <button
