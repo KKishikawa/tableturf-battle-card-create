@@ -15,13 +15,10 @@
     }
     th,
     td {
-      @apply py-4 px-6 bg-white dark:bg-gray-900;
+      @apply py-4 px-6;
     }
-    tr + tr {
-      th,
-      td {
-        @apply border-t dark:border-gray-700 bg-clip-padding;
-      }
+    tr {
+      @apply bg-white border-b dark:bg-gray-900 dark:border-gray-700;
     }
     .action {
       @apply font-medium text-blue-600 dark:text-blue-500 hover:underline;
@@ -36,7 +33,7 @@
 }
 .table-hover {
   tbody tr {
-    @apply relative after:absolute after:inset-0 after:z-10 after:pointer-events-none after:opacity-30 hover:after:bg-gray-300 dark:hover:after:bg-gray-600;
+    @apply hover:bg-gray-100 dark:hover:bg-gray-600;
   }
 }
 .table-striped {
