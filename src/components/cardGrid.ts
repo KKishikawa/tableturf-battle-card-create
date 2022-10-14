@@ -40,17 +40,18 @@ export class CardGrid {
   changeSize(size: CardGridCellSize) {
     this.element.dataset["grid_size"] = size;
   }
-  /** 設定値をもとにグリッドを塗ります(上書き) */
+  /** 設定値をもとにグリッドを塗ります(追加) */
   fill(spx: number[], px: number[]) {
-    for (const p of px) {
-      this.fillCell(p, fillTypes[0]);
-    }
-    for (const p of spx) {
-      this.fillCell(p, fillTypes[1]);
-    }
+    const cells = this.element.querySelectorAll<HTMLElement>("[data-idx]");
+    spx.forEach((x) => {
+      cells[x].classList.add(fillTypes[1]);
+    });
+    px.forEach((x) => {
+      cells[x].classList.add(fillTypes[0]);
+    });
   }
   /** 対象のグリッドを塗ります */
-  fillCell(idx: number, className: string) {
+  fillCell(className: string, idx: number) {
     const target = this.element.querySelector(`[data-idx="${idx}"]`);
     if (!target) return;
     target.classList.add(className);
@@ -84,9 +85,7 @@ export class CardGrid {
       this.element.getElementsByClassName(fillTypes[1])
     ) as HTMLElement[];
     function collectIdxVal(cells: HTMLElement[]) {
-      return cells
-        .map((e) => toInt(e.dataset["idx"]))
-        .filter(isFinite);
+      return cells.map((e) => toInt(e.dataset["idx"])).filter(isFinite);
     }
     return {
       n: collectIdxVal(nCells),
