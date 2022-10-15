@@ -68,7 +68,8 @@ export function findCardByNo(card_no: number) {
   const tr = tableBody.querySelector<HTMLTableRowElement>(
     `tr[data-card_no="${card_no}"]`
   );
-  return tr;
+  if (!tr) return null;
+  return loadCardFromRow(tr);
 }
 export function tryAddCard(cardInfo: ICard) {
   const newTr = createCardRow(cardInfo);

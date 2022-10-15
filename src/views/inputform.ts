@@ -8,6 +8,7 @@ import { ICard } from "@/models/card";
 import * as cardList from "@/views/cardList";
 
 import errMsgHTML from "@/template/inputForm/errorMsg.html";
+import overwriteHTML from "@/template/inputForm/overwriteMsg.html";
 
 class InputForm {
   private readonly infoElManager: SimpleInfo;
@@ -141,16 +142,20 @@ export const inputForm = new InputForm();
       });
       return;
     }
-    const isEdit = !!cardList.findCardByNo(validateRet[1].no);
-    const dialogConfig: dialog.IComfirmOption = isEdit
-      ? { title: "カードの編集", message: "カードの情報を上書きしますか？" }
-      : { title: "カードの登録", message: "カードを追加しますか？" };
+    const existsInfo = cardList.findCardByNo(validateRet[1].no);
+
+    let dialogConfig: dialog.IComfirmOption;
+    if (existsInfo) {
+      dialogConfig = { title: "カードの編集", html: Mustache.render(overwriteHTML, { old: existsInfo, new: validateRet[1] }) };
+    } else {
+      dialogConfig = { title: "カードの登録", message: "カードを追加しますか？" };
+    }
     dialog.confirm(dialogConfig).then(
       () => {
         cardList.tryAddCard(validateRet[1]);
         // バックグラウンドで自動保存を実行する
         window.setTimeout(cardList.saveCardList.bind(null, true));
-        Message.success(isEdit ? "更新しました" : "追加しました。");
+        Message.success(existsInfo ? "更新しました" : "追加しました。");
         inputForm.clearForm();
       },
       () => {
