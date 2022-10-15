@@ -94,6 +94,31 @@ export function tryAddCard(cardInfo: ICard) {
   tableBody.insertBefore(newTr, targetEl.nextSibling);
 }
 
+/** リストをフィルターします */
+function filterSortRow() {
+  const trs = Array.from(
+    tableBody.children as HTMLCollectionOf<HTMLTableRowElement>
+  );
+  const text = (
+    document.getElementById("input_cardlist_serch") as HTMLInputElement
+  ).value;
+
+  const searchCondition = (info: ICard) => {
+    if (!info.ja.includes(text)) return false;
+
+    return true;
+  };
+
+  trs.forEach((tr) => {
+    const info = loadCardFromRow(tr);
+    if (searchCondition(info)) {
+      tr.classList.remove("hidden");
+    } else {
+      tr.classList.add("hidden");
+    }
+  });
+}
+
 function createCardRow(cardInfo: ICard) {
   const gridCount = inkCount(cardInfo.sg, cardInfo.g);
   const row = htmlToElement(
@@ -106,7 +131,6 @@ function createCardRow(cardInfo: ICard) {
     })
   );
   const clientNameWidth = mesureWidth(cardInfo.ja, "text-sm font-bold");
-  console.log([cardInfo.ja, clientNameWidth]);
   if (clientNameWidth > 152) {
     const scale = 152 / clientNameWidth;
     (
@@ -221,6 +245,21 @@ export function saveCardList(isAutoSaveAction?: boolean) {
       cardListTable.dataset["layout"] = layoutName;
     });
   });
+
+  // 検索
+  const form = document.getElementById("cardlist_serch")!;
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    filterSortRow();
+  });
+  form.querySelectorAll(".input-clear").forEach((el) =>
+    el.addEventListener("click", () => {
+      setTimeout(()=> {
+        // クリア処理後に処理をするために、イベントハンドリング処理終了後に処理を実行する。
+        filterSortRow();
+      });
+    })
+  );
 }
 // initialize
 {

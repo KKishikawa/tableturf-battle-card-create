@@ -246,12 +246,13 @@
           <caption class="table-caption-title">
             <div class="flex items-center">
               <span class="mr-12">カードリスト</span>
-              <div class="flex items-center search-container">
+              <form id="cardlist_serch" class="flex items-center search-container">
                 <div
                   class="relative w-56 transition-all duration-300"
                   data-clearable
                 >
                   <input
+                    id="input_cardlist_serch"
                     class="w-full pr-16 form-input"
                     type="search"
                     placeholder="カード名検索"
@@ -264,7 +265,7 @@
                   </button>
                   <i class="input-clear right-12 fa fa-circle-xmark"></i>
                 </div>
-              </div>
+              </form>
               <div class="flex-auto"></div>
               <div class="button-toggle" role="group">
                 <button
