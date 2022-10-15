@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "test": "jest",
-    "build": "NODE_ENV=production webpack --config webpack.prod.js",
+    "build": "cross-env NODE_ENV=production webpack --config webpack.prod.js",
     "serve": "webpack serve --open --config webpack.dev.js"
   },
   "devDependencies": {
@@ -16,6 +16,7 @@
     "autoprefixer": "^10.4.12",
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^11.0.0",
+    "cross-env": "^7.0.3",
     "css-loader": "^6.7.1",
     "cssnano": "^5.1.13",
     "eslint": "^8.25.0",
