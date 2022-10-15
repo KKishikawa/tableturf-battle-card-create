@@ -13,9 +13,9 @@ export interface ICardRaw {
   /** 日本語名 */
   ja: string;
   /** spマス */
-  sg: string;
+  sg?: string;
   /** sp以外マス */
-  g: string;
+  g?: string;
   /** レア度 */
   r: number;
 }
@@ -35,11 +35,12 @@ export interface ICard {
 }
 
 export const RARITY = ["コモン", "レア", "フレッシュ"];
-/** 塗り情報文字列を座標配列に復元します */
-export function encodeInkInfo(val: number[] | null | undefined) {
-  return RecordUtil.writeFixRecord(val);
-}
 /** 塗り座標数列を情報文字列に変換します */
+export function encodeInkInfo(val: number[] | null | undefined) {
+  const d = RecordUtil.writeFixRecord(val);
+  return d != "" ? d : undefined;
+}
+/** 塗り情報文字列を座標配列に復元します */
 export function decodeInkInfo(val: string | null | undefined) {
   return RecordUtil.readeFixRecord(val);
 }
@@ -90,10 +91,12 @@ export function saveToLocalStorage(data: ICard[]) {
 /** カードリスト情報をファイルに保存します */
 export function saveToFile(data: ICard[]) {
   const d = encodeCardData(data);
-  saveJson(JSON.stringify(d), "tableturf-buttle-cardlist.json")
+  saveJson(JSON.stringify(d), "tableturf-buttle-cardlist.json");
 }
 /** ファイルからカードリスト情報を読み込みます */
-export async function loadFromFile(file: File | Blob | null): Promise<ICard[] | null> {
+export async function loadFromFile(
+  file: File | Blob | null
+): Promise<ICard[] | null> {
   if (!file) return null;
   try {
     const json = await file.text();
