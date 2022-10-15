@@ -3,9 +3,9 @@ import * as RecordUtil from "@/utils/variableRecord";
 export interface ICardData {
   /** バージョン */
   v: 0;
-  c: ICardRaw[];
+  c: ICard[];
 }
-export interface ICardRaw {
+export interface ICard {
   /** カードno */
   n: number;
   /** sp必要数 */
@@ -19,22 +19,14 @@ export interface ICardRaw {
   /** レア度 */
   r: number;
 }
-export interface ICard {
-  /** カードno */
-  no: number;
-  /** sp必要数 */
-  sp: number;
-  /** カード名 */
-  name: string;
-  /** spマス */
-  spx: number[];
-  /** sp以外マス */
-  px: number[];
-  /** レア度 */
-  rarity: number;
-}
 
 export const RARITY = ["コモン", "レア", "フレッシュ"];
+function createJsonData(c: ICard[]): ICardData {
+  return {
+    v: 0,
+    c,
+  };
+}
 /** 塗り座標数列を情報文字列に変換します */
 export function encodeInkInfo(val: number[] | null | undefined) {
   const d = RecordUtil.writeFixRecord(val);
@@ -44,53 +36,25 @@ export function encodeInkInfo(val: number[] | null | undefined) {
 export function decodeInkInfo(val: string | null | undefined) {
   return RecordUtil.readeFixRecord(val);
 }
-export function encodeCard(card: ICard): ICardRaw {
-  return {
-    n: card.no,
-    sp: card.sp,
-    ja: card.name,
-    r: card.rarity,
-    sg: encodeInkInfo(card.spx),
-    g: encodeInkInfo(card.px),
-  };
-}
-export function decodeCard(card: ICardRaw): ICard {
-  return {
-    no: card.n,
-    sp: card.sp,
-    name: card.ja,
-    rarity: card.r,
-    spx: decodeInkInfo(card.sg),
-    px: decodeInkInfo(card.g),
-  };
-}
-
-function encodeCardData(cards: ICard[]): ICardData {
-  return {
-    v: 0,
-    c: cards.map(encodeCard),
-  };
-}
-function decodeCardData(data: ICardData): ICard[] {
-  if (data.v === 0) return data.c.map(decodeCard);
-  return [];
+/** 塗れる数をカウントします */
+export function inkCount(...g: (string | null | undefined)[]) {
+  return g.reduce((init, g) => init + RecordUtil.calcFixRecordLen(g), 0);
 }
 
 const stragekey = "tableturf_cardinfoV0";
-/** ローカルストレージにデータを保存します */
+/** ローカルストレージからデータを取得します */
 export function loadFromLocalStorage(): ICard[] {
   const d = getFromStorage<ICardData>(stragekey);
   if (!d) return [];
-  return decodeCardData(d);
+  return d.c;
 }
-/** ローカルストレージからデータを取得します */
+/** ローカルストレージにデータを保存します */
 export function saveToLocalStorage(data: ICard[]) {
-  const d = encodeCardData(data);
-  setToStrage(stragekey, d);
+  setToStrage(stragekey, data);
 }
 /** カードリスト情報をファイルに保存します */
 export function saveToFile(data: ICard[]) {
-  const d = encodeCardData(data);
+  const d = createJsonData(data);
   saveJson(JSON.stringify(d), "tableturf-buttle-cardlist.json");
 }
 /** ファイルからカードリスト情報を読み込みます */
@@ -101,7 +65,7 @@ export async function loadFromFile(
   try {
     const json = await file.text();
     const d = JSON.parse(json);
-    return decodeCardData(d);
+    return d.c;
   } catch (error) {
     console.log(error);
     return null;

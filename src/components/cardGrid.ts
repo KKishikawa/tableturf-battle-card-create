@@ -1,5 +1,6 @@
 import { htmlToElement } from "@/utils";
 import { toInt } from "@/utils/convert";
+import { decodeInkInfo, encodeInkInfo } from "@/models/card";
 
 function createCell(idx: number) {
   const cell = document.createElement("div");
@@ -41,13 +42,12 @@ export class CardGrid {
     this.element.dataset["grid_size"] = size;
   }
   /** 設定値をもとにグリッドを塗ります(追加) */
-  fill(spx: number[], px: number[]) {
+  fill(g: string | null | undefined, sg: string | null | undefined) {
     const cells = this.element.querySelectorAll<HTMLElement>("[data-idx]");
-    spx.forEach((x) => {
-      cells[x].classList.add(fillTypes[1]);
-    });
-    px.forEach((x) => {
-      cells[x].classList.add(fillTypes[0]);
+    [g, sg].forEach((g, i) => {
+      decodeInkInfo(g).forEach((x) => {
+        cells[x].classList.add(fillTypes[i]);
+      });
     });
   }
   /** 対象のグリッドを塗ります */
@@ -78,18 +78,15 @@ export class CardGrid {
   }
   /** 塗れる範囲を2つの1次元配列で表現します */
   getData() {
-    const nCells = Array.from(
-      this.element.getElementsByClassName(fillTypes[0])
-    ) as HTMLElement[];
-    const spCells = Array.from(
-      this.element.getElementsByClassName(fillTypes[1])
-    ) as HTMLElement[];
-    function collectIdxVal(cells: HTMLElement[]) {
-      return cells.map((e) => toInt(e.dataset["idx"])).filter(isFinite);
-    }
-    return {
-      n: collectIdxVal(nCells),
-      sp: collectIdxVal(spCells),
-    };
+    const ret: { g?: string; sg?: string } = {};
+    (["g", "sg"] as const).forEach((key, idx) => {
+      const idxVals = (
+        Array.from(
+          this.element.getElementsByClassName(fillTypes[idx])
+        ) as HTMLElement[]
+      ).map((e) => toInt(e.dataset["idx"]));
+      ret[key] = encodeInkInfo(idxVals);
+    });
+    return ret;
   }
 }

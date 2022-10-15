@@ -3,10 +3,8 @@ import { htmlToElement, mesureWidth } from "@/utils";
 import { toInt } from "@/utils/convert";
 import {
   ICard,
-  ICardRaw,
   RARITY,
-  decodeInkInfo,
-  encodeCard,
+  inkCount,
   loadFromLocalStorage,
   saveToLocalStorage,
   saveToFile,
@@ -28,15 +26,15 @@ function loadCardFromRow(tr: HTMLTableRowElement): ICard {
   const card_sp = toInt(tr.querySelector(".card_sp")!.textContent?.trim());
   const card_name = tr.querySelector(".card_name")!.textContent!.trim();
   const rarity = toInt(tr.dataset["card_rarity"]);
-  const spx = decodeInkInfo(tr.dataset["card_spx"]);
-  const px = decodeInkInfo(tr.dataset["card_px"]);
+  const sg = tr.dataset["card_spx"];
+  const g = tr.dataset["card_px"];
   return {
-    px,
-    spx,
-    no: card_no,
-    name: card_name,
+    g,
+    sg,
+    n: card_no,
+    ja: card_name,
     sp: card_sp,
-    rarity,
+    r: rarity,
   };
 }
 function deleteRow(tr: HTMLTableRowElement) {
@@ -77,12 +75,12 @@ export function tryAddCard(cardInfo: ICard) {
   let targetEl: HTMLTableRowElement | undefined;
   for (const cur_tr of trs) {
     const curCardNo = toInt(cur_tr.dataset["card_no"]);
-    if (curCardNo === cardInfo.no) {
+    if (curCardNo === cardInfo.n) {
       // if same, replace it
       cur_tr.replaceWith(newTr);
       return;
     }
-    if (curCardNo < cardInfo.no) {
+    if (curCardNo < cardInfo.n) {
       targetEl = cur_tr;
       break;
     }
@@ -97,18 +95,18 @@ export function tryAddCard(cardInfo: ICard) {
 }
 
 function createCardRow(cardInfo: ICard) {
-  const gridCount = cardInfo.spx.length + cardInfo.px.length;
+  const gridCount = inkCount(cardInfo.sg, cardInfo.g);
   const row = htmlToElement(
     Mustache.render(tableRowHTML, {
-      ...encodeCard(cardInfo),
+      ...cardInfo,
       gridCount,
-      rarity_label(this: ICardRaw) {
+      rarity_label(this: ICard) {
         return RARITY[this.r];
       },
     })
   );
-  const clientNameWidth = mesureWidth(cardInfo.name, "text-sm font-bold");
-  console.log([cardInfo.name, clientNameWidth]);
+  const clientNameWidth = mesureWidth(cardInfo.ja, "text-sm font-bold");
+  console.log([cardInfo.ja, clientNameWidth]);
   if (clientNameWidth > 152) {
     const scale = 152 / clientNameWidth;
     (
@@ -116,7 +114,7 @@ function createCardRow(cardInfo: ICard) {
     ).style.cssText = `--tw-scale-x:${scale};--tw-scale-y:${scale};`;
   }
   const cardGrid = new CardGrid();
-  cardGrid.fill(cardInfo.spx, cardInfo.px);
+  cardGrid.fill(cardInfo.g, cardInfo.sg);
   row.prepend(cardGrid.element);
   return row;
 }
@@ -197,7 +195,7 @@ export function saveCardList(isAutoSaveAction?: boolean) {
           if (!cards) return Promise.reject();
           tableBody.innerHTML = "";
           cards
-            .sort((a, b) => a.no - b.no)
+            .sort((a, b) => a.n - b.n)
             .forEach((c) => {
               const tr = createCardRow(c);
               tableBody.append(tr);
@@ -228,7 +226,7 @@ export function saveCardList(isAutoSaveAction?: boolean) {
 {
   const cardData = loadFromLocalStorage();
   cardData
-    .sort((a, b) => a.no - b.no)
+    .sort((a, b) => a.n - b.n)
     .forEach((c) => {
       const tr = createCardRow(c);
       tableBody.append(tr);

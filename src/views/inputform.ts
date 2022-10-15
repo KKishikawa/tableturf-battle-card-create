@@ -42,15 +42,15 @@ class InputForm {
   /** formにデータを読み込む */
   loadCard(info: ICard) {
     (document.getElementById("input_no") as HTMLInputElement).value =
-      info.no.toString();
+      info.n.toString();
     (document.getElementById("input_sp") as HTMLInputElement).value =
       info.sp.toString();
     (document.getElementById("input_rarity") as HTMLSelectElement).value =
-      info.rarity.toString();
+      info.r.toString();
     (document.getElementById("input_name") as HTMLInputElement).value =
-      info.name;
+      info.ja;
     this.gridManager.clear();
-    this.gridManager.fill(info.spx, info.px);
+    this.gridManager.fill(info.g, info.sg);
     this.showGridInfo();
   }
   /** グリッドの情報の表示を更新する */
@@ -89,12 +89,11 @@ class InputForm {
       .value;
     const gridInfo = this.gridManager.getData();
     const ret: ICard = {
-      name,
+      ...gridInfo,
+      ja: name,
       sp,
-      no: card_no,
-      rarity,
-      spx: gridInfo.sp,
-      px: gridInfo.n,
+      n: card_no,
+      r: rarity,
     };
     // validation
     if (card_no < 1) {
@@ -142,7 +141,7 @@ export const inputForm = new InputForm();
       });
       return;
     }
-    const existsInfo = cardList.findCardByNo(validateRet[1].no);
+    const existsInfo = cardList.findCardByNo(validateRet[1].n);
 
     let dialogConfig: dialog.IComfirmOption;
     if (existsInfo) {
