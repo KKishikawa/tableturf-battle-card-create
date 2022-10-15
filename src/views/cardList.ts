@@ -1,5 +1,5 @@
 import Mustache from "mustache";
-import { htmlToElement } from "@/utils";
+import { htmlToElement, mesureWidth } from "@/utils";
 import { toInt } from "@/utils/convert";
 import {
   ICard,
@@ -106,6 +106,14 @@ function createCardRow(cardInfo: ICard) {
       },
     })
   );
+  const clientNameWidth = mesureWidth(cardInfo.name, "text-sm font-bold");
+  console.log([cardInfo.name, clientNameWidth]);
+  if (clientNameWidth > 152) {
+    const scale = 152 / clientNameWidth;
+    (
+      row.querySelector(".card_name *") as HTMLElement
+    ).style.cssText = `--tw-scale-x:${scale};--tw-scale-y:${scale};`;
+  }
   const cardGrid = new CardGrid();
   cardGrid.fill(cardInfo.spx, cardInfo.px);
   row.prepend(cardGrid.element);
@@ -204,10 +212,11 @@ export function saveCardList(isAutoSaveAction?: boolean) {
   });
 
   // レイアウト変更
-  const layoutButtons = document.querySelectorAll<HTMLElement>("[data-button_type]");
+  const layoutButtons =
+    document.querySelectorAll<HTMLElement>("[data-button_type]");
   layoutButtons.forEach((el) => {
-    el.addEventListener("click", function() {
-      layoutButtons.forEach(el => el.classList.remove("button-active"));
+    el.addEventListener("click", function () {
+      layoutButtons.forEach((el) => el.classList.remove("button-active"));
       this.classList.add("button-active");
       const layoutName = this.dataset["button_type"]!;
       cardListTable.dataset["layout"] = layoutName;

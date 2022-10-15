@@ -97,10 +97,10 @@
       @apply hidden;
     }
     tbody {
-      @apply flex flex-wrap gap-2 py-2;
+      @apply flex flex-wrap gap-4 py-2;
     }
     tr {
-      @apply inline-grid drop-shadow-md  shadow-black dark:shadow-white grid-cols-8 w-44 row-auto gap-1 border-2 rounded-lg p-1 after:content-none;
+      @apply inline-grid drop-shadow-md shadow-black dark:shadow-white grid-cols-8 w-44 row-auto gap-1 border-2 rounded-lg p-1 after:content-none;
     }
     td {
       @apply block border-none px-1 py-0;
@@ -136,7 +136,10 @@
       }
     }
     .card_name {
-      @apply -order-10 col-span-full text-ellipsis font-bold text-sm text-center py-1;
+      @apply -order-10 flex justify-center whitespace-nowrap col-span-full font-bold text-sm pb-1 -mx-2;
+      * {
+        @apply scale-100;
+      }
     }
     .cardgrid {
       @apply -order-9 col-span-full place-self-center;

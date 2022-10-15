@@ -23,6 +23,18 @@ export function htmlToElements<T extends HTMLElement>(
   const template = generateDomFragment(html);
   return template.content.children as HTMLCollectionOf<T>;
 }
+export function mesureWidth(str: string, className?: string){
+  const div = document.createElement("div");
+  div.className = "fixed h-0";
+  if (className != null) {
+    div.className += " " + className;
+  }
+  div.innerText = str;
+  document.body.append(div);
+  const w = div.clientWidth;
+  div.remove();
+  return w;
+}
 
 /** 指定したキーのデータを取得する */
 export function getFromStorage<T>(key: string): T | null {
