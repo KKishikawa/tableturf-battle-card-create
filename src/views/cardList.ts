@@ -112,9 +112,9 @@ function filterSortRow() {
   trs.forEach((tr) => {
     const info = loadCardFromRow(tr);
     if (searchCondition(info)) {
-      tr.classList.remove("hidden");
+      tr.classList.remove("!hidden");
     } else {
-      tr.classList.add("hidden");
+      tr.classList.add("!hidden");
     }
   });
 }
