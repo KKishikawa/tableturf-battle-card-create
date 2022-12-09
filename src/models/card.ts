@@ -50,7 +50,8 @@ export function loadFromLocalStorage(): ICard[] {
 }
 /** ローカルストレージにデータを保存します */
 export function saveToLocalStorage(data: ICard[]) {
-  setToStrage(stragekey, data);
+  const d = createJsonData(data);
+  setToStrage(stragekey, d);
 }
 /** カードリスト情報をファイルに保存します */
 export function saveToFile(data: ICard[]) {
